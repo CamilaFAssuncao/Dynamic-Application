@@ -5,12 +5,11 @@
   }
   
 
+
 body {
     border-radius: 40px;
-    
-background: -webkit-linear-gradient(180deg, rgb(19, 28, 70), rgb(7, 138, 239));
-background: linear-gradient(180deg, rgb(19, 28, 70), rgb(7, 138, 239));
-
+    background: -webkit-linear-gradient(180deg, rgb(19, 28, 70), rgb(7, 138, 239));
+    background: linear-gradient(180deg, rgb(19, 28, 70), rgb(7, 138, 239));
     color: white;
     text-align: center;
     display: flex;
@@ -112,6 +111,14 @@ img {
 #details-container {
     display: flex;
     justify-content: space-evenly;
+    background-color: navy;
+    opacity: 0.2;
+    padding: 5px;
+    border-radius: 25px;
+}
+
+#details-container i p {
+    font-size: 22px;
 }
 
 .flex-container {
@@ -121,7 +128,6 @@ img {
   
   .icons {
     flex: 1;
-    /* Adjust any additional styling for the icons */
   }
 
 .weatherContainer {
@@ -133,7 +139,7 @@ img {
 }
 
 .minValues {
-   color: rgb(73 72 74)
+   color: rgb(73 72 74);
 }
 
 /* @media (max-width: 767px) {
