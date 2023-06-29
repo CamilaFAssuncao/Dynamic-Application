@@ -109,9 +109,10 @@ async function getCurrentWeatherData(city) {
 }
 
 async function getForecastData(city) {
-  const apiForecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}&lang=en`;
+  const apiForecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
   const res = await fetch(apiForecastURL);
   const data = await res.json();
+  console.log(data)
   return data;
 }
 
