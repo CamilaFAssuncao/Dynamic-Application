@@ -103,6 +103,7 @@
     font-size: 22px;
     padding: 2%;
     margin: 4%;
+    
   }
   
   #details-container {
@@ -118,6 +119,10 @@
     font-size: 22px;
   }
   
+#max-tem {
+    margin-right: 10px;
+}
+
   .flex-container {
     display: flex;
     flex-wrap: nowrap;

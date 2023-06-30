@@ -51,50 +51,72 @@ async function showWeatherData(city) {
     maxTempElement.innerText = Math.round(currentData.main.temp_max);
     minTempElement.innerText = Math.round(currentData.main.temp_min);
 
-    // Display forecast for the next 5 days
+  
+        // Display forecast for the next 5 days
+        const forecastDays = forecastData.list;
+        const currentDate = new Date();
+        const tomorrow = new Date(currentDate);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+        let forecastIndex = 0;
     
-
-    const forecastDays = forecastData.list;
-    let forecastIndex = 0;
-
-    for (let i = 0; i < 5; i++) {
-      const dayData = forecastDays[forecastIndex];
-
-      if (dayData && dayData.weather && dayData.weather[0] && dayData.weather[0].icon) {
-        const dayName = getDayName(dayData.dt);
-        const icon = dayData.weather[0].icon;
-
-        // Initialize the min and max temperatures for each day
-        let minTemp = Infinity;
-        let maxTemp = -Infinity;
-
-        for (let j = 0; j < 8; j++) {
-          const hourData = forecastDays[forecastIndex];
-
-          if (hourData && hourData.main && hourData.main.temp_max && hourData.main.temp_min) {
-            // Update the min and max temperatures if necessary
-            if (hourData.main.temp_max > maxTemp) {
-              maxTemp = hourData.main.temp_max;
+        for (let i = 0; i < 5; i++) {
+          let dayData = null;
+    
+          // Find the forecast data that corresponds to the current day
+          while (forecastIndex < forecastDays.length) {
+            const forecastDate = new Date(forecastDays[forecastIndex].dt_txt);
+    
+            if (forecastDate.getDate() === tomorrow.getDate()) {
+              dayData = forecastDays[forecastIndex];
+              break;
             }
-            if (hourData.main.temp_min < minTemp) {
-              minTemp = hourData.main.temp_min;
-            }
+    
+            forecastIndex++;
           }
-
-          forecastIndex++;
+    
+          if (dayData && dayData.weather && dayData.weather[0] && dayData.weather[0].icon) {
+            const dayName = getDayName(dayData.dt);
+            const icon = dayData.weather[0].icon;
+    
+            // Initialize the min and max temperatures for each day
+            let minTemp = Infinity;
+            let maxTemp = -Infinity;
+    
+            // Find the min and max temperatures within the day
+            while (forecastIndex < forecastDays.length) {
+              const hourData = forecastDays[forecastIndex];
+    
+              if (new Date(hourData.dt_txt).getDate() !== tomorrow.getDate()) {
+                break;
+              }
+    
+              if (hourData && hourData.main && hourData.main.temp_max && hourData.main.temp_min) {
+                // Update the min and max temperatures if necessary
+                if (hourData.main.temp_max > maxTemp) {
+                  maxTemp = hourData.main.temp_max;
+                }
+                if (hourData.main.temp_min < minTemp) {
+                  minTemp = hourData.main.temp_min;
+                }
+              }
+    
+              forecastIndex++;
+            }
+    
+            const iconElement = document.getElementById("img" + (i + 1));
+            const dayNameElement = document.getElementById("day" + (i + 1) + "Name");
+            const maxTempElement = document.getElementById("day" + (i + 1) + "Max");
+            const minTempElement = document.getElementById("day" + (i + 1) + "Min");
+    
+            iconElement.src = "http://openweathermap.org/img/wn/" + icon + ".png";
+            dayNameElement.innerHTML = dayName;
+            maxTempElement.innerHTML = Math.round(maxTemp) + "°C";
+            minTempElement.innerHTML = Math.round(minTemp) + "°C";
+          }
+    
+          tomorrow.setDate(tomorrow.getDate() + 1);
         }
-
-        const iconElement = document.getElementById("img" + (i + 1));
-        const dayNameElement = document.getElementById("day" + (i + 1) + "Name");
-        const maxTempElement = document.getElementById("day" + (i + 1) + "Max");
-        const minTempElement = document.getElementById("day" + (i + 1) + "Min");
-
-        iconElement.src = "http://openweathermap.org/img/wn/" + icon + ".png";
-        dayNameElement.innerHTML = dayName;
-        maxTempElement.innerHTML = Math.round(maxTemp) + "°C";
-        minTempElement.innerHTML = Math.round(minTemp) + "°C";
-      }
-    }
 
     // Show the output and hide the "not-found" div
     output.classList.remove("hide");
