@@ -52,27 +52,48 @@ async function showWeatherData(city) {
     minTempElement.innerText = Math.round(currentData.main.temp_min);
 
     // Display forecast for the next 5 days
-    const forecastDays = forecastData.list.filter((data, index) =>
-      isForecastDay(index)
-    );
+    
+
+    const forecastDays = forecastData.list;
+    let forecastIndex = 0;
+
     for (let i = 0; i < 5; i++) {
-    //   const dayElement = document.getElementById("day" + (i + 1));
-      const iconElement = document.getElementById("img" + (i + 1));
-      const dayNameElement = document.getElementById("day" + (i + 1) + "Name");
-      const maxTempElement = document.getElementById("day" + (i + 1) + "Max");
-      const minTempElement = document.getElementById("day" + (i + 1) + "Min");
+      const dayData = forecastDays[forecastIndex];
 
-      const dayData = forecastDays[i];
-      const dayName = getDayName(dayData.dt);
-      const icon = dayData.weather[0].icon;
-      const maxTemp = Math.round(dayData.main.temp_max);
-      const minTemp = Math.round(dayData.main.temp_min);
+      if (dayData && dayData.weather && dayData.weather[0] && dayData.weather[0].icon) {
+        const dayName = getDayName(dayData.dt);
+        const icon = dayData.weather[0].icon;
 
-    //   dayElement.innerHTML = dayName;
-      iconElement.src = "http://openweathermap.org/img/wn/" + icon + ".png";
-      dayNameElement.innerHTML = dayName;
-      maxTempElement.innerHTML = maxTemp + "°C";
-      minTempElement.innerHTML = minTemp + "°C";
+        // Initialize the min and max temperatures for each day
+        let minTemp = Infinity;
+        let maxTemp = -Infinity;
+
+        for (let j = 0; j < 8; j++) {
+          const hourData = forecastDays[forecastIndex];
+
+          if (hourData && hourData.main && hourData.main.temp_max && hourData.main.temp_min) {
+            // Update the min and max temperatures if necessary
+            if (hourData.main.temp_max > maxTemp) {
+              maxTemp = hourData.main.temp_max;
+            }
+            if (hourData.main.temp_min < minTemp) {
+              minTemp = hourData.main.temp_min;
+            }
+          }
+
+          forecastIndex++;
+        }
+
+        const iconElement = document.getElementById("img" + (i + 1));
+        const dayNameElement = document.getElementById("day" + (i + 1) + "Name");
+        const maxTempElement = document.getElementById("day" + (i + 1) + "Max");
+        const minTempElement = document.getElementById("day" + (i + 1) + "Min");
+
+        iconElement.src = "http://openweathermap.org/img/wn/" + icon + ".png";
+        dayNameElement.innerHTML = dayName;
+        maxTempElement.innerHTML = Math.round(maxTemp) + "°C";
+        minTempElement.innerHTML = Math.round(minTemp) + "°C";
+      }
     }
 
     // Show the output and hide the "not-found" div
