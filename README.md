@@ -22,14 +22,9 @@ Enough is enough, you decide to build a small web application for them so that y
 - On clicking the SUBMIT button or pressing ENTER the application will display the weather for the next 5 days
 - The application must be responsive and mobile-friendly
 
-### 💡 Not sure where to start? Split this features into multiple smaller todos (in your code, sketch, ...)
-
 ### 🌼 Nice to haves (in no specific order)
 - Display a line graph of temperature over time using a library such as Chart.js
 - Remember the user's choice on subsequent visits
 - Allow the user to compare the weather in two cities
 - Use the API of [Unsplash](https://unsplash.com/) to show a photo of the city they entered in the form.
 
-## Instructions
-1. Create an account on OpenWeather and generate a key
-2. Get the weather data using the native JS fetch() method (if you like, you can also check out axios)
